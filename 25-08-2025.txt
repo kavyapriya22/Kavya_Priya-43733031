@@ -1,0 +1,57 @@
+DROP DATABASE IF EXISTS amazon;
+CREATE DATABASE amazon;
+USE amazon;
+
+CREATE TABLE category (
+  cid   INT PRIMARY KEY,
+  cname VARCHAR(50) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE products (
+  pno    INT PRIMARY KEY,
+  pname  VARCHAR(100) NOT NULL,
+  price  DECIMAL(10,2) NOT NULL,
+  cid    INT NOT NULL,
+  INDEX idx_products_cid (cid),
+  CONSTRAINT fk_products_category
+    FOREIGN KEY (cid)
+    REFERENCES category(cid)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE orders (
+  ono        INT PRIMARY KEY,
+  order_date DATE NOT NULL,
+  pno        INT NOT NULL,
+  qty        INT NOT NULL,
+  INDEX idx_orders_pno (pno),
+  CONSTRAINT fk_orders_products
+    FOREIGN KEY (pno)
+    REFERENCES products(pno)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO category (cid, cname) VALUES
+  (1001, 'electronics'),
+  (1002, 'furniture');
+
+INSERT INTO products (pno, pname, price, cid) VALUES
+  (201, 'Samsung S24',  74999.00, 1001),
+  (202, 'LG OLED TV',  129999.00, 1001),
+  (203, 'Office Chair',  7999.00, 1002);
+
+INSERT INTO orders (ono, order_date, pno, qty) VALUES
+  (5001, '2025-08-22', 201, 1),
+  (5002, '2025-08-23', 202, 2),
+  (5003, '2025-08-23', 203, 4);
+
+SELECT * FROM category;
+SELECT * FROM products;
+SELECT * FROM orders;
+
+DELETE FROM products WHERE pno = 202;
+
+SELECT * FROM products;
+SELECT * FROM orders;
