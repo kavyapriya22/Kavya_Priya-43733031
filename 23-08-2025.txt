@@ -1,0 +1,124 @@
+FOR TWO TABLES (CATEGORY , PRODUCTS)
+
+
+create database amazon;
+use amazon;
+
+CREATE TABLE category (
+cid int primary key,
+cname varchar(25) not null
+);
+
+insert into category values (1001,'electronics');
+insert into category values (1002,'furniture');
+select * from category;
+CREATE TABLE products(
+Pid int PRIMARY KEY,
+Pname  varchar(50) NOT NULL,
+CID INT NOT NULL,
+FOREIGN KEY (cid) REFERENCES category(cid)
+);
+drop table products;
+insert into products value (902, 'Samsung s24',1001);
+select * from products;
+
+delete from category where cid=1002;
+
+update category set cid=1003 where cid=1001;
+
+
+
+FOR THREE TABLES (CATEGORY , PRODUCTS, ORDERS)
+
+CREATE DATABASE amazon;
+USE amazon;
+
+CREATE TABLE category (
+  cid   INT PRIMARY KEY,
+  cname VARCHAR(25) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE products (
+  pid   INT PRIMARY KEY,
+  pname VARCHAR(50) NOT NULL,
+  cid   INT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  INDEX idx_products_cid (cid),
+  CONSTRAINT fk_products_category
+    FOREIGN KEY (cid)
+    REFERENCES category(cid)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+
+CREATE TABLE orders (
+  oid        INT PRIMARY KEY,
+  order_date DATE NOT NULL,
+  pid        INT NOT NULL,
+  qty        INT NOT NULL,
+  INDEX idx_orders_pid (pid),
+  CONSTRAINT fk_orders_products
+    FOREIGN KEY (pid)
+    REFERENCES products(pid)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+INSERT INTO category (cid, cname) VALUES
+  (1001, 'electronics'),
+  (1002, 'furniture');
+
+INSERT INTO products (pid, pname, cid, price) VALUES
+  (901, 'Samsung S24', 1001, 74999.00),
+  (902, 'LG OLED TV',  1001, 129999.00),
+  (903, 'Office Chair',1002, 7999.00);
+
+INSERT INTO orders (oid, order_date, pid, qty) VALUES
+  (5001, '2025-08-22', 901, 1),
+  (5002, '2025-08-23', 902, 2),
+  (5003, '2025-08-23', 903, 4);
+
+SELECT * FROM category;
+SELECT * FROM products;
+SELECT * FROM orders;
+
+SELECT
+  o.oid, o.order_date, o.qty,
+  p.pid, p.pname, p.price,
+  c.cid, c.cname
+FROM orders o
+JOIN products p ON p.pid = o.pid
+JOIN category c ON c.cid = p.cid
+ORDER BY o.oid;
+
+
+CONSTRAINS 
+
+
+DROP TABLE IF EXISTS Persons;
+DROP TABLE IF EXISTS Person;
+
+CREATE TABLE Persons(
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int
+);
+
+ALTER TABLE Persons MODIFY Age int NOT NULL;
+
+CREATE TABLE Person(
+    ID int NOT NULL, 
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int,
+    UNIQUE(ID)
+);
+
+ALTER TABLE Person DROP INDEX ID;
+
+ALTER TABLE Person ADD CONSTRAINT pk_person PRIMARY KEY (ID);
+
+SHOW INDEXES FROM Person;
+
