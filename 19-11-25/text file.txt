@@ -1,0 +1,113 @@
+PTRACTICE 1
+
+package FIRSTCLASS;
+
+class OMR {
+
+	public static void main(String[] args) {
+		Animal obj = new Animal();
+		obj.Lion();
+		
+		Birds obj1 = new Birds();
+		obj1.Parrot();
+		
+
+	}
+
+}
+ class Animal{
+	 void Lion() {
+		 System.out.println("Lion roar");
+	 }
+ }
+class Birds{
+	void Parrot() {
+		System.out.println("Parrot whistle");
+	}
+}
+
+
+PRACTICE 2
+
+package FIRSTCLASS;
+public class OMR {
+	public static void main(String[] args) {
+
+		Program1 program=new Program1(100);
+		
+		program.addition();
+		
+	}
+}
+class Program1{
+	int marks=95; //class variable
+	//user def methods
+	protected void addition(){
+		int result= marks*100;
+		System.out.println(result);
+		//method local inner class
+		class InsideClass{
+			void division(){
+				System.out.println("method Local inner class output");
+			}
+		}
+	}
+	//initi block
+	{
+		System.out.println("Welcome...!");
+		String date="19th Nov 2025";
+		System.out.println(date);
+	}
+	
+	//constru //def //parame
+	public Program1() {
+		System.out.println("Iam a def const..");
+	}
+	public Program1(int a){
+		a=marks+a;
+		System.out.println(a);
+	}
+	
+	
+}
+
+
+
+PRACTICE 3
+
+package FIRSTCLASS;
+public class OMR {
+	public static void main(String[] args) {
+
+		Student s=new Student();
+		s.name();
+		Placement p =new Placement();
+		p.fees();
+		p.subject();
+		Faculty f=new Faculty();
+		f.department();
+	}
+}
+class University{
+	void department(){
+		System.out.println("Department: DataScience");
+	}
+}
+
+class Faculty extends University{
+	void subject(){
+		System.out.println("Subject: Java Full Stack");
+	}
+}
+
+class Student extends Faculty{
+	void name(){
+		System.out.println("Name: XXXX");
+	}
+}
+
+class Placement extends Student{
+	void fees(){
+		System.out.println("Fees: 30000");
+	}
+}
