@@ -1,0 +1,198 @@
+OVER LOADING
+
+package package1;
+public class overwriting {
+	void add(int a, int b) {
+	System.out.println("Sum of two numbers:"+(a + b));
+	}
+	void add(int a, int b, int c) {
+		System.out.println("Sum of three numbers: " + (a + b + c));
+	}
+	void add(double a, double b) {
+		System.out.println("Sum of two double numbers: " + (a + b));
+	}
+	public static void main(String[] args) {
+		
+	overwriting obj = new overwriting();
+	obj.add(10, 20);
+	obj.add(10, 20, 30);
+	obj.add(5.5, 4.5);
+	}
+}
+
+OVERRIDING
+
+package package1;
+public class overwriting{
+    public static void main(String[] args) {
+
+        Bird b1 = new Bird(); 
+        b1.sound();
+
+        Sparrow b2 = new Sparrow();  
+        b2.sound();
+        
+        Parrot b3 = new Parrot();  
+        b2.sound();
+    }
+}
+class Bird {
+    void sound() {
+        System.out.println("Bird makes a sound");
+    }
+}
+
+class Sparrow extends Bird {
+    void sound() {
+        System.out.println("Sparrow chirps");
+    }
+}
+
+class Parrot extends Bird {
+    void sound() {
+        System.out.println("Parrot talks");
+    }
+}
+
+
+CONSTRUCTOR
+
+package package1;
+class Person {
+
+    String name;
+    int age;
+
+    Person() {
+        name = "Lekha";
+        System.out.println(name);
+    }
+
+    Person(String n, int a) {
+        name = n;
+        age = a;
+        System.out.println(name + age);
+    }
+}
+
+public class overwriting {
+    public static void main(String[] args) {
+
+        Person p1 = new Person();           
+        Person p2 = new Person("Kavya", 21);
+    }
+}
+
+ENCAPSULATION
+
+package package2;
+class Student {
+    private String name;
+    private int reg;
+
+    public void setName(String n) {
+        name = n;
+    }
+
+    public void setReg(int a) {
+        reg = a;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getReg() {
+        return reg;
+    }
+}
+public class encapsule {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.setName("Kavya");
+        s.setReg(54321);
+
+        System.out.println(s.getName() + " - " + s.getReg());
+    }
+}
+
+
+ABSTRACT
+
+package package2;
+//Interface
+interface DailyActivities {
+	void studyHours();
+	void sleepHours(); 
+}
+
+//Abstract Class
+abstract class Student {
+ 
+// Normal method
+void wakeUp() {
+	System.out.println("Student wakes up at 6:00 AM");
+}
+
+// Abstract method
+abstract void collegeTime();
+}
+
+class CollegeStudent extends Student implements DailyActivities {
+
+ //Override
+ void collegeTime() {
+     System.out.println("College from 9:00 AM to 4:00 PM");
+ }
+
+ //Override
+ public void studyHours() {
+     System.out.println("Studies for 3 hours at home");
+ }
+
+ //Override
+ public void sleepHours() {
+     System.out.println("Sleeps for 8 hours");
+ }
+}
+
+public class encapsule {
+ public static void main(String[] args) {
+     CollegeStudent cs = new CollegeStudent();
+
+     cs.wakeUp();
+     cs.collegeTime(); 
+     cs.studyHours();
+     cs.sleepHours(); 
+ }
+}
+
+EXCEPTIONS
+
+package package3;
+
+public class errorhandle {
+	
+	public static void main(String[] args) {
+		try {
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("cannot divide by zero");
+        }
+	
+		  try {
+	            int[] numbers = {10, 20, 30};
+	            System.out.println("Value: " + numbers[5]);
+	        } 
+	        catch (ArrayIndexOutOfBoundsException e) {
+	            System.out.println("Error: You are trying to access an index that does not exist!");
+	        } 
+	        finally {
+	            System.out.println("Finally block executed: Array handling completed.");
+	        }
+
+	        System.out.println("Program continues normally..."); 
+	}
+		
+}
+
