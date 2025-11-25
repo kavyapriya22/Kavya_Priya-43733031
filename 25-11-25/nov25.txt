@@ -1,0 +1,222 @@
+1) THREADING
+
+package package1;
+
+public class multithread {
+	public static void main(String args[]) {
+
+		// object creation for thread classes
+		Numeric num = new Numeric();
+		Alpha alp = new Alpha();
+		
+		num.start();
+
+        	try {
+            	num.join();  // waits for t1 to finish completely
+        	} 
+		catch (InterruptedException e) {
+            		System.out.println(e);
+        	}
+
+        	alp.start(); 
+
+		System.out.println("Number Thread : " + num.getName());
+		System.out.println("Alphabets Thread : " + alp.getName());
+
+		System.out.println("Number Thread : " + num.getPriority());
+		System.out.println("Alphabets Thread : " + alp.getPriority());
+
+		System.out.println("Number Thread : " + num.getState());
+		System.out.println("Alphabets Thread : " + alp.getState());
+
+		System.out.println(Thread.currentThread().getName());
+
+		num.setName("Kavya");
+		alp.setName("Viji");
+
+		System.out.println("Number Thread : " + num.getState());
+		System.out.println("Alphabets Thread : " + alp.getState());
+
+		if (num.isAlive()) {
+		System.out.println("Kavya thread is Alive");
+		} else {
+			System.out.println("Kavya Thread is dead");
+		}
+
+		if (alp.isAlive()) {
+		System.out.println("Viji thread is Alive");
+		} else {
+		System.out.println("Viji thread is dead");
+		}
+
+	}
+
+}
+class Numeric extends Thread {
+	int a = 0;
+
+	public void run() {
+
+		try {
+			for (int i = 0; i <= 10; i++) {
+				a++;
+		System.out.println("Numeric Thread : " + a);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+}
+
+class Alpha extends Thread {
+	char a = 'A';
+
+	public void run() {
+		try {
+			for (int i = 0; i <= 25; i++) {
+
+		System.out.println("Alpha Thread : " + a);
+				a++;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+}
+
+
+2) DIGITAL CLOCK
+
+
+package package1;
+public class multithread {
+	public static void main(String args[]) {
+		// object creation for thread classes
+		Minute num = new Minute();
+		Seconds alp = new Seconds();
+
+		// start the thread
+		num.start();
+		alp.start();
+	
+	}
+
+}
+
+class Minute extends Thread {
+	int a = 0;
+
+	public void run() {
+
+		try {
+			for (int i = 0; i <= 59; i++) {
+				try {
+				System.out.println("Minutes : " + a);
+				a++;
+				Thread.sleep(60000);
+				}
+				catch(Exception e) {
+					System.out.println(e);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+}
+
+class Seconds extends Thread {
+	int a=0;
+
+	public void run() {
+		try {
+			for (int i = 0; i <= 59; i++) {
+
+				try {
+				System.out.println("Seconds :" + a);
+				a++;
+				Thread.sleep(1000);
+				}
+				catch(Exception e) {
+					System.out.println("Issues in Minutes Thread class");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+}
+
+
+3) ARRAYS
+
+package package2;
+import java.util.*;
+
+/*public class Array {
+	public static void main(String[] args) {
+		int[] Array = { 1, 2, 3, 4, 5 };
+	    System.out.println(Arrays.toString(Array));
+	    }
+	}
+*/
+
+/*public class Array {
+    public static void main(String[] args) {
+        String[] arr = { "abc", "def", "ghi", "klm", "nop" };
+        boolean result = Arrays.asList(arr).contains("klm");
+        System.out.println(result);
+    }
+}
+*/
+
+
+/*public class Array {
+    public static void main(String[] args) {
+        String[] arr = { "a", "b", "c", "d", "e", "a" };
+        Set<String> set = new HashSet<>(Arrays.asList(arr));
+        System.out.println(set);
+    }
+}
+*/
+
+
+/*public class Array {
+    public static void main(String[] args) {
+        int[] arr = { 1, 2, 3, 4, 5 };
+
+        for (int i = 0; i < arr.length / 2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = temp;
+        }
+
+        System.out.println(Arrays.toString(arr));
+    }
+}
+*/
+
+
+public class Array {
+    public static void main(String[] args) {
+        int[] arr = { 1, 2, 3, 4, 5 };
+        int removeVal = 3;
+        int[] result = new int[arr.length - 1];
+        int index = 0;
+
+        for (int num : arr) {
+            if (num != removeVal) {
+                result[index++] = num;
+            }
+        }
+
+        System.out.println(Arrays.toString(result));
+    }
+}
+
+
+
