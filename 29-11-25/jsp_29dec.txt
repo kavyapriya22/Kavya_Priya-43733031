@@ -1,0 +1,198 @@
+1.Index.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+<form method="post" action="login.jsp">
+<center>
+<table border="1" width="30%" cellpadding="3">
+<tr><th colspan="2">Login Here</th></tr>
+
+<tr>
+<td>User Name</td>
+<td><input type="text" name="uname" /></td>
+</tr>
+
+<tr>
+<td>Password</td>
+<td><input type="password" name="pass" /></td>
+</tr>
+
+<tr>
+<td><input type="submit" value="Login" /></td>
+<td><input type="reset" value="Reset" /></td>
+</tr>
+
+<tr>
+<td colspan="2">Yet Not Registered? <a href="reg.jsp">Register Here</a></td>
+</tr>
+
+</table>
+</center>
+</form>
+</body>
+</html>
+
+2.registration.jap
+
+<%@ page import="java.sql.*" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+
+<%
+String fname = request.getParameter("fname");
+String lname = request.getParameter("lname");
+String email = request.getParameter("email");
+String uname = request.getParameter("uname");
+String pass = request.getParameter("pass");
+
+// Only try to insert if all fields are provided
+if (fname != null && lname != null && email != null && uname != null && pass != null) {
+
+    String jdbcUrl = "jdbc:mysql://localhost:3306/test29?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    String dbUser = "root";  // Make sure this MySQL user exists
+    String dbPass = "root";  // Make sure this password is correct
+
+    Connection con = null;
+    PreparedStatement ps = null;
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        con = DriverManager.getConnection(jdbcUrl, dbUser, dbPass);
+
+        String sql = "INSERT INTO members29(first_name, last_name, email, uname, pass, regdate) VALUES (?,?,?,?,?,CURDATE())";
+        ps = con.prepareStatement(sql);
+
+        ps.setString(1, fname);
+        ps.setString(2, lname);
+        ps.setString(3, email);
+        ps.setString(4, uname);
+        ps.setString(5, pass);
+
+        int i = ps.executeUpdate();
+
+        if (i > 0) {
+            response.sendRedirect("welcome.jsp");
+        } else {
+            out.println("<p style='color:red;'>❌ Registration failed.</p>");
+        }
+
+    } catch (SQLException sqle) {
+        out.println("<p style='color:red;'>SQL Error: " + sqle.getMessage() + "</p>");
+    } catch (ClassNotFoundException cnfe) {
+        out.println("<p style='color:red;'>Driver Error: " + cnfe.getMessage() + "</p>");
+    } finally {
+        try { if (ps != null) ps.close(); } catch (Exception e) {}
+        try { if (con != null) con.close(); } catch (Exception e) {}
+    }
+}
+%>
+
+3. login.jsp
+
+<%@ page import="java.sql.*" %>
+
+<%
+String userid = request.getParameter("uname");
+String pwd = request.getParameter("pass");
+
+String jdbcUrl = "jdbc:mysql://localhost:3306/test29?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+String dbUser = "root";
+String dbPass = "root";
+
+try {
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    Connection con = DriverManager.getConnection(jdbcUrl, dbUser, dbPass);
+
+    String sql = "SELECT * FROM members29 WHERE uname=? AND pass=?";
+    PreparedStatement ps = con.prepareStatement(sql);
+    ps.setString(1, userid);
+    ps.setString(2, pwd);
+
+    ResultSet rs = ps.executeQuery();
+
+    if (rs.next()) {
+        session.setAttribute("userid", userid);
+        response.sendRedirect("success.jsp");
+    } else {
+        out.println("Invalid username/password. <a href='index.jsp'>Try Again</a>");
+    }
+
+    rs.close();
+    ps.close();
+    con.close();
+
+} catch (Exception e) {
+    out.println("Error: " + e.getMessage());
+}
+%>
+
+4. reg.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Registration</title>
+</head>
+<body>
+<form method="post" action="registration.jsp">
+<center>
+<table border="1" width="30%" cellpadding="5">
+<tr><th colspan="2">Enter Information Here</th></tr>
+
+<tr><td>First Name</td><td><input type="text" name="fname" /></td></tr>
+<tr><td>Last Name</td><td><input type="text" name="lname" /></td></tr>
+<tr><td>Email</td><td><input type="text" name="email" /></td></tr>
+<tr><td>User Name</td><td><input type="text" name="uname" /></td></tr>
+<tr><td>Password</td><td><input type="password" name="pass" /></td></tr>
+
+<tr>
+<td><input type="submit" value="Submit" /></td>
+<td><input type="reset" value="Reset" /></td>
+</tr>
+
+<tr>
+<td colspan="2">Already Registered? <a href="index.jsp">Login Here</a></td>
+</tr>
+
+</table>
+</center>
+</form>
+</body>
+</html>
+
+5. logout.jsp
+
+<%
+session.invalidate();
+response.sendRedirect("index.jsp");
+%>
+
+6. success.jsp
+
+<%
+if (session.getAttribute("userid") == null) {
+%>
+You are not logged in.<br>
+<a href="index.jsp">Login Here</a>
+<%
+} else {
+%>
+Welcome <b><%= session.getAttribute("userid") %></b><br>
+<a href="logout.jsp">Logout</a>
+<%
+}
+%>
+
+7. welcome.jsp
+
+<html>
+<body>
+<h2>Registration Successful!</h2>
+<a href="index.jsp">Go to Login</a>
+</body>
+</html>
